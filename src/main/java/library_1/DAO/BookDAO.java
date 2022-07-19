@@ -6,18 +6,13 @@ import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
+
 import java.util.List;
 
 @Component
 public class BookDAO {
     private final JdbcTemplate jdbcTemplate;
 
-    List<Book>listbook = new ArrayList<>();
-    {
-        listbook.add(new Book());
-        listbook.add(new Book());
-    }
 
     @Autowired
     public BookDAO(JdbcTemplate jdbcTemplate) {
@@ -25,8 +20,8 @@ public class BookDAO {
     }
 
     public List<Book> index() {
-        //return jdbcTemplate.query("SELECT * FROM Books", new BeanPropertyRowMapper<>(Book.class));
-        return listbook;
+        return jdbcTemplate.query("SELECT * FROM Books", new BeanPropertyRowMapper<>(Book.class));
+
     }
 
     public Book show(int id) {
