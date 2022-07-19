@@ -1,6 +1,7 @@
 package library_1.controllers;
 
 import library_1.DAO.PersonDAO;
+import library_1.models.Book;
 import library_1.models.Person;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -69,4 +70,6 @@ public class PeopleController {
         personDAO.delete(id);
         return "redirect:/people";
     }
+
+
 }

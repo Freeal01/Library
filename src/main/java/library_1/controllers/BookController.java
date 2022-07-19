@@ -1,6 +1,7 @@
 package library_1.controllers;
 
 import library_1.DAO.BookDAO;
+import library_1.DAO.PersonDAO;
 import library_1.models.Book;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,11 +17,14 @@ import javax.validation.Valid;
 public class BookController {
 
     private final BookDAO bookDAO;
+    private final PersonDAO personDAO;
 
     @Autowired
-    public BookController(BookDAO bookDAO) {
+    public BookController(BookDAO bookDAO, PersonDAO personDAO) {
         this.bookDAO = bookDAO;
+        this.personDAO = personDAO;
     }
+
 
     @GetMapping()
     public String index(Model model) {
@@ -47,7 +51,7 @@ public class BookController {
             return "books/new";
 
         bookDAO.save(book);
-        return "redirect:/people";
+        return "redirect:/books";
     }
 
     @GetMapping("/{id}/edit")
@@ -71,4 +75,19 @@ public class BookController {
         bookDAO.delete(id);
         return "redirect:/books";
     }
+
+    @PatchMapping("/{id}/getBook")
+    public String getByPerson(@ModelAttribute("book") @Valid Book book, BindingResult bindingResult,
+                         @PathVariable("id") int id) {
+        if (bindingResult.hasErrors())
+            return "books/edit";
+
+        bookDAO.getByPerson(id, book);
+
+        personDAO.getBook_id(book.getPerson_id(),id);
+
+        return "redirect:/books";
+    }
+
+
 }
